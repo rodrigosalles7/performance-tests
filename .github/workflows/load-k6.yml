@@ -69,7 +69,7 @@ jobs:
       - name: Run K6 load test
         run: docker-compose up --build
 
-      - run: ls & cd performance & mkdir report & mv index.html report
+      - run: cd performance & ls & mkdir report & mv index.html report
 
       - name: Upload K6 report
         uses: actions/upload-artifact@v3

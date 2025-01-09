@@ -1,0 +1,16 @@
+{
+  "name": "ecom-api-automation",
+  "version": "1.0.0",
+  "description": "ecom-api-automation",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "rm -rf reports/*.html reports/*.xml",
+    "jira:qmetry": "node reports/jira/qmetry.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "node-rest-client": "^1.4.4"
+  }
+}

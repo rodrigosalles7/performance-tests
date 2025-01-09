@@ -1,0 +1,41 @@
+{
+    "@type": "MessageCard",
+    "@context": "https://schema.org/extensions",
+    "summary": "Issue 176715375",
+    "themeColor": "0078D7",
+    "title": "Status Regression Ecom",
+    "sections": [
+        {
+            "activityTitle": "$module",
+            "activitySubtitle": "$date",
+            "activityImage": "https://cdn-icons-png.flaticon.com/512/226/226776.png",
+            "facts": [
+                {
+                    "name": "Status:",
+                    "value": "$status"
+                },
+                {
+                    "name": "Version:",
+                    "value": "$version"
+                },
+                {
+                    "name": "Duration:",
+                    "value": "$duration"
+                }
+            ],
+            "text": "Automatic report of regressions."
+        }
+    ],
+    "potentialAction": [
+        {
+            "@type": "OpenUri",
+            "name": "See details",
+            "targets": [
+                {
+                    "os": "default",
+                    "uri": "https://ideal-giggle-y66ov79.pages.github.io/teste.html"
+                }
+            ]
+        }
+    ]
+}

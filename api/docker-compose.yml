@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  k6:
+    build: .
+    environment:
+      VIRTUAL_USERS: ${VIRTUAL_USERS}
+      TEST_DURATION: ${TEST_DURATION}
+      BASE_URL: ${BASE_URL}
+    volumes:
+      - ./performance:/app/performance
+    working_dir: /app
+    entrypoint: [ "k6", "run", "/app/performance/loadCreateScenariosPage.js" ]

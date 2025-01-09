@@ -1,4 +1,4 @@
 FROM grafana/k6:latest
 WORKDIR /app
 COPY . .
-ENTRYPOINT ["k6", "run", "/app/performance/loadTest.js"]
+ENTRYPOINT ["K6_WEB_DASHBOARD=true", "k6", "run", "/app/performance/loadTest.js"]

@@ -53,7 +53,7 @@ jobs:
 
       - name: Extract HTML report
         run: |
-          docker-compose run --rm k6-load-test sh -c "mkdir -p /app/report && mv /app/performance/index.html /app/report/index.html"
+          docker-compose run --rm k6-load-test sh -c "mkdir -p /app/report && [ -f /app/performance/index.html ] && mv /app/performance/index.html /app/report/index.html || echo 'File not found'"
 
       - name: Copy report to host
         run: |

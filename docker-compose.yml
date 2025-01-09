@@ -10,9 +10,11 @@ services:
       TEST_DURATION_RAMP_UP: ${TEST_DURATION_RAMP_UP}
       TEST_DURATION_RAMP_DOWN: ${TEST_DURATION_RAMP_DOWN}
       BASE_URL: ${BASE_URL}
-      K6_WEB_DASHBOARD: "true"
-      K6_WEB_DASHBOARD_EXPORT: "/app/index2.html"
+      # K6_WEB_DASHBOARD: "true"
+      # K6_WEB_DASHBOARD_EXPORT: "/app/index2.html"
     volumes:
       - ./performance:/app/performance
+      - ./debug:/app/debug
     working_dir: /app
-    entrypoint: [ "k6", "run", "/app/performance/loadTest.js" ]
+    entrypoint: ["sh", "-c", "k6 run /app/performance/loadTest.js && cp /app/debug/index.html /app/performance/index.html"]
+    # entrypoint: [ "k6", "run", "/app/performance/loadTest.js" ]

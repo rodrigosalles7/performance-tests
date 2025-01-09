@@ -47,16 +47,20 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
-      # - name: Run K6 load test
-      #   run: |
-      #     docker-compose down
-      #     docker-compose up --build k6-load-test
+      - name: Run K6 load test
+        run: |
+          docker-compose up --build k6-load-test
 
-      - name: List files in the container
-        run: docker-compose exec k6-load-test sh -c "find /app -name '*.html'"
+      - name: Extract HTML report
+        run: |
+          docker-compose run --rm k6-load-test sh -c "mkdir -p /app/report && mv /app/performance/index.html /app/report/index.html"
 
-      - name: Upload K6 HTML Report
-        uses: actions/upload-artifact@v4
+      - name: Copy report to host
+        run: |
+          docker cp $(docker-compose ps -q k6-load-test):/app/report ./report
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
         with:
-          name: K6 Load Test Report
-          path: performance/index.html
+          name: K6 Performance Test Report
+          path: ./report

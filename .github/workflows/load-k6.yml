@@ -18,15 +18,15 @@ on:
       test_duration_ramp_up:
         description: 'Tempo de Ramp-Up (ex: 5m)'
         required: true
-        default: '5m'
+        default: '5s'
       test_duration_constant:
         description: 'Tempo constante (ex: 20m)'
         required: true
-        default: '20m'
+        default: '10s'
       test_duration_ramp_down:
         description: 'Tempo de Ramp-Down (ex: 5m)'
         required: true
-        default: '5m'
+        default: '5s'
       base_url:
         description: 'Base URL para teste'
         required: true

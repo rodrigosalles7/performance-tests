@@ -43,4 +43,4 @@ jobs:
           echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
 
       - name: Run K6 load test
-        run: docker-compose -f api/docker-compose.yml up --build
+        run: docker-compose -f docker-compose.yml up --build

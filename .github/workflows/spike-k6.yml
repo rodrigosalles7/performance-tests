@@ -1,0 +1,46 @@
+name: K6 Spike Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      virtual_users:
+        description: 'Número de usuários virtuais'
+        required: true
+        default: '10'
+      test_duration:
+        description: 'Duração do teste (ex: 20m)'
+        required: true
+        default: '10s'
+      base_url:
+        description: 'Base URL para teste'
+        required: true
+        default: 'https://hml2.ilotto.com.br'
+
+env:
+  VIRTUAL_USERS: ${{ secrets.VIRTUAL_USERS }}
+  TEST_DURATION: ${{ secrets.TEST_DURATION }}
+  BASE_URL: ${{ secrets.BASE_URL }}
+
+jobs:
+  load-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      - name: Set up environment variables
+        run: |
+          echo "VIRTUAL_USERS=${{ github.event.inputs.virtual_users }}" >> $GITHUB_ENV
+          echo "TEST_DURATION=${{ github.event.inputs.test_duration }}" >> $GITHUB_ENV
+          echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
+
+      - name: Run K6 load test
+        run: docker-compose -f docker-compose.yml up --build

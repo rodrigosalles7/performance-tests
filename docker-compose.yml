@@ -11,8 +11,9 @@ services:
       TEST_DURATION_RAMP_DOWN: ${TEST_DURATION_RAMP_DOWN}
       BASE_URL: ${BASE_URL}
       K6_WEB_DASHBOARD: "true"
-      K6_WEB_DASHBOARD_EXPORT: "relatorio2.html"
+      K6_WEB_DASHBOARD_EXPORT: "/app/report/relatorio2.html" # Caminho para o relatório
     volumes:
       - ./performance:/app/performance
+      - ./report:/app/report # Volume para salvar o relatório
     working_dir: /app
     entrypoint: [ "k6", "run", "/app/performance/loadTest.js" ]

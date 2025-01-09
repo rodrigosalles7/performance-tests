@@ -55,6 +55,9 @@ jobs:
       - name: List performance directory
         run: ls -l performance/
 
+      - name: List performance directory2
+        run: ls -l ./
+
       - name: Upload K6 HTML Report
         uses: actions/upload-artifact@v4
         with:

@@ -1,56 +1,12 @@
-version: '3.3'
+version: '3.8'
 services:
-  cypress-test:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: ecom-cypress:latest
-    container_name: ecom-${FEATURE}-${TEST_TYPE}-${MODE}
+  k6:
+    build: .
     environment:
-      - PROJECT_NAME
-      - TEST_TYPE
-      - FEATURE
-      - DEVICE
-      - BROWSER
-      - MODE
-      - IS_CI
-      - DOWNLOAD_PATH
-      - ECOM_UI_BASEURL
-      - RELEASE
-
-    command: npm run ecom:${DEVICE}:${TEST_TYPE}:${MODE}
-    working_dir: /app
+      VIRTUAL_USERS: ${VIRTUAL_USERS}
+      TEST_DURATION: ${TEST_DURATION}
+      BASE_URL: ${BASE_URL}
     volumes:
-      - ./cypress/test-results:/app/cypress/test-results
-      - ./cypress/screenshots:/app/cypress/screenshots
-      - ./cypress/videos:/app/cypress/videos
-      - .env:/app/.env
-  ecom-report-html:
-    image: ecom-cypress:latest
-    container_name: ${PROJECT_NAME}-html-report
-    env_file:
-      - .env
-    command: npm run report:html
+      - ./performance:/app/performance
     working_dir: /app
-    volumes:
-      - ./cypress/test-results:/app/cypress/test-results
-      - ./cypress/screenshots:/app/cypress/screenshots
-      - ./cypress/videos:/app/cypress/videos
-      - .env:/app/.env
-  ecom-e2e-test:
-    image: ecom-cypress:latest
-    depends_on:
-      - cypress-test
-    container_name: ${PROJECT_NAME}-report
-    environment:
-      - PROJECT_NAME
-      - FEATURE
-      - BROWSER
-      - DEVICE
-      - MODE
-    command: npm run ${PROJECT_NAME}:report
-    working_dir: /app
-    volumes:
-      - ./cypress/test-results:/app/cypress/test-results
-      - ./cypress/screenshots:/app/cypress/screenshots
-      - ./cypress/videos:/app/cypress/videos
+    entrypoint: [ "k6", "run", "/app/performance/loadCreateScenariosPage.js" ]

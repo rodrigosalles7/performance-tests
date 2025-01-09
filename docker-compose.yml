@@ -11,6 +11,7 @@ services:
       TEST_DURATION_RAMP_DOWN: ${TEST_DURATION_RAMP_DOWN}
       BASE_URL: ${BASE_URL}
       K6_WEB_DASHBOARD: "true"
+      K6_WEB_DASHBOARD_EXPORT: "relatorio2.html"
     volumes:
       - ./performance:/app/performance
     working_dir: /app

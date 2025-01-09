@@ -17,11 +17,3 @@ services:
       - ./report:/app/report
     working_dir: /app
     entrypoint: [ "k6", "run", "/app/performance/loadTest.js" ]
-
-  k6-report-html:
-    image: node:16
-    container_name: k6-html-report
-    working_dir: /app
-    volumes:
-      - ./report:/app/report
-    command: cp /app/report/index2.html /app/report/index.html

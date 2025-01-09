@@ -1,13 +1,13 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 
-const BASE_URL = __ENV.BASE_URL || 'https://api-hml2.ilotto.com.br/bff/customer/winners-feed?orderBy=date&skip=0&take=10';
-const VIRTUAL_USERS_CONSTANT = __ENV.VIRTUAL_USERS_CONSTANT || 100;
-const VIRTUAL_USERS_RAMP_UP = __ENV.VIRTUAL_USERS_RAMP_UP || 100;
+const BASE_URL = __ENV.BASE_URL || 'https://hml2.ilotto.com.br';
+const VIRTUAL_USERS_CONSTANT = __ENV.VIRTUAL_USERS_CONSTANT || 10;
+const VIRTUAL_USERS_RAMP_UP = __ENV.VIRTUAL_USERS_RAMP_UP || 10;
 const VIRTUAL_USERS_RAMP_DOWN = __ENV.VIRTUAL_USERS_RAMP_DOWN || 0;
-const TEST_DURATION_CONSTANT = __ENV.TEST_DURATION_CONSTANT || '5m';
-const TEST_DURATION_RAMP_UP = __ENV.TEST_DURATION_RAMP_UP || '1h';
-const TEST_DURATION_RAMP_DOWN = __ENV.TEST_DURATION_RAMP_DOWN || '5';
+const TEST_DURATION_CONSTANT = __ENV.TEST_DURATION_CONSTANT || '10s';
+const TEST_DURATION_RAMP_UP = __ENV.TEST_DURATION_RAMP_UP || '20s';
+const TEST_DURATION_RAMP_DOWN = __ENV.TEST_DURATION_RAMP_DOWN || '10s';
 
 // Configuração de carga
 export const options = {

@@ -69,8 +69,8 @@ jobs:
       - name: Run K6 load test
         run: docker-compose -f docker-compose.yml up --build
 
-      - name: Upload K6 report
-        uses: actions/upload-artifact@v3
-        with:
-          name: k6-report
-          path: ./performance/report.html
+      # - name: Upload K6 report
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: k6-report
+      #     path: ./performance/report.html

@@ -13,4 +13,4 @@ services:
     volumes:
       - ./performance:/app/performance
     working_dir: /app
-    entrypoint: [ "k6", "run", "/app/performance/loadTest.js" ]
+    entrypoint: [ "K6_WEB_DASHBOARD=true", "k6", "run", "/app/performance/loadTest.js" ]

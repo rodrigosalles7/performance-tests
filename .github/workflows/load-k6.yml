@@ -51,13 +51,13 @@ jobs:
         run: |
           docker-compose up --build k6-load-test
 
-      - name: Extract HTML report
+      - name: Move HTML report
         run: |
           docker-compose run --rm k6-load-test sh -c "mkdir -p /app/report && [ -f /app/performance/index.html ] && mv /app/performance/index.html /app/report/index.html || echo 'File not found'"
+          docker-compose run --rm k6-load-test sh -c "ls -l /app/report"
 
       - name: Copy report to host
-        run: |
-          docker cp $(docker-compose ps -q k6-load-test):/app/report ./report
+        run: docker cp $(docker-compose ps -q k6-load-test):/app/report ./report
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3

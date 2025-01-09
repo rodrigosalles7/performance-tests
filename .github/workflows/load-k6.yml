@@ -3,22 +3,42 @@ name: K6 Load Test
 on:
   workflow_dispatch:
     inputs:
-      virtual_users:
-        description: 'Número de usuários virtuais'
+      virtual_users_ramp_up:
+        description: 'VUs em Ramp-Up'
         required: true
         default: '10'
-      test_duration:
-        description: 'Duração do teste (ex: 20m)'
+      virtual_users_constant:
+        description: 'VUs no tempo constante'
         required: true
-        default: '10s'
+        default: '10'
+      virtual_users_ramp_down:
+        description: 'VUs em Ramp-Down'
+        required: true
+        default: '0'
+      test_duration_ramp_up:
+        description: 'Tempo de Ramp-Up (ex: 5m)'
+        required: true
+        default: '5m'
+      test_duration_constant:
+        description: 'Tempo constante (ex: 20m)'
+        required: true
+        default: '20m'
+      test_duration_ramp_down:
+        description: 'Tempo de Ramp-Down (ex: 5m)'
+        required: true
+        default: '5m'
       base_url:
         description: 'Base URL para teste'
         required: true
         default: 'https://hml2.ilotto.com.br'
 
 env:
-  VIRTUAL_USERS: ${{ secrets.VIRTUAL_USERS }}
-  TEST_DURATION: ${{ secrets.TEST_DURATION }}
+  VIRTUAL_USERS_CONSTANT: ${{ secrets.VIRTUAL_USERS_CONSTANT }}
+  VIRTUAL_USERS_RAMP_UP: ${{ secrets.VIRTUAL_USERS_RAMP_UP }}
+  VIRTUAL_USERS_RAMP_DOWN: ${{ secrets.VIRTUAL_USERS_RAMP_DOWN }}
+  TEST_DURATION_CONSTANT: ${{ secrets.TEST_DURATION_CONSTANT }}
+  TEST_DURATION_RAMP_UP: ${{ secrets.TEST_DURATION_RAMP_UP }}
+  TEST_DURATION_RAMP_DOWN: ${{ secrets.TEST_DURATION_RAMP_DOWN }}
   BASE_URL: ${{ secrets.BASE_URL }}
 
 jobs:
@@ -38,8 +58,12 @@ jobs:
 
       - name: Set up environment variables
         run: |
-          echo "VIRTUAL_USERS=${{ github.event.inputs.virtual_users }}" >> $GITHUB_ENV
-          echo "TEST_DURATION=${{ github.event.inputs.test_duration }}" >> $GITHUB_ENV
+          echo "VIRTUAL_USERS_CONSTANT=${{ github.event.inputs.virtual_users_constant }}" >> $GITHUB_ENV
+          echo "VIRTUAL_USERS_RAMP_UP=${{ github.event.inputs.virtual_users_ramp_up }}" >> $GITHUB_ENV
+          echo "VIRTUAL_USERS_RAMP_DOWN=${{ github.event.inputs.virtual_users_ramp_down }}" >> $GITHUB_ENV
+          echo "TEST_DURATION_CONSTANT=${{ github.event.inputs.test_duration_constant }}" >> $GITHUB_ENV
+          echo "TEST_DURATION_RAMP_UP=${{ github.event.inputs.test_duration_ramp_up }}" >> $GITHUB_ENV
+          echo "TEST_DURATION_RAMP_DOWN=${{ github.event.inputs.test_duration_ramp_down }}" >> $GITHUB_ENV
           echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
 
       - name: Run K6 load test

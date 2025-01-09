@@ -50,11 +50,11 @@ jobs:
       - name: Run K6 load test
         run: docker-compose up --build k6-load-test
 
-      - name: List report directory
-        run: ls -l report/
+      - name: List performance directory
+        run: ls -l performance/
 
       - name: Upload K6 HTML Report
         uses: actions/upload-artifact@v4
         with:
           name: K6 Load Test Report
-          path: report/index.html
+          path: performance/index.html

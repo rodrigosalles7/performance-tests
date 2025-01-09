@@ -14,6 +14,5 @@ services:
       K6_WEB_DASHBOARD_EXPORT: "/app/report/index2.html"
     volumes:
       - ./performance:/app/performance
-      - ./report:/app/report
     working_dir: /app
     entrypoint: [ "k6", "run", "/app/performance/loadTest.js" ]

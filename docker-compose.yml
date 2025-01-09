@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  k6:
+  k6-load-test:
     build: .
     environment:
       VIRTUAL_USERS_CONSTANT: ${VIRTUAL_USERS_CONSTANT}
@@ -11,9 +11,17 @@ services:
       TEST_DURATION_RAMP_DOWN: ${TEST_DURATION_RAMP_DOWN}
       BASE_URL: ${BASE_URL}
       K6_WEB_DASHBOARD: "true"
-      K6_WEB_DASHBOARD_EXPORT: "/app/report/relatorio2.html" # Caminho para o relatório
+      K6_WEB_DASHBOARD_EXPORT: "/app/report/index2.html"
     volumes:
       - ./performance:/app/performance
-      - ./report:/app/report # Volume para salvar o relatório
+      - ./report:/app/report
     working_dir: /app
     entrypoint: [ "k6", "run", "/app/performance/loadTest.js" ]
+
+  k6-report-html:
+    image: node:16
+    container_name: k6-html-report
+    working_dir: /app
+    volumes:
+      - ./report:/app/report
+    command: cp /app/report/index2.html /app/report/index.html

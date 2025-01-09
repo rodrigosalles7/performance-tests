@@ -1,13 +1,14 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
+import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
 
 const BASE_URL = __ENV.BASE_URL || 'https://hml2.ilotto.com.br';
 const VIRTUAL_USERS_CONSTANT = __ENV.VIRTUAL_USERS_CONSTANT || 10;
 const VIRTUAL_USERS_RAMP_UP = __ENV.VIRTUAL_USERS_RAMP_UP || 10;
 const VIRTUAL_USERS_RAMP_DOWN = __ENV.VIRTUAL_USERS_RAMP_DOWN || 0;
-const TEST_DURATION_CONSTANT = __ENV.TEST_DURATION_CONSTANT || '10s';
-const TEST_DURATION_RAMP_UP = __ENV.TEST_DURATION_RAMP_UP || '20s';
-const TEST_DURATION_RAMP_DOWN = __ENV.TEST_DURATION_RAMP_DOWN || '10s';
+const TEST_DURATION_CONSTANT = __ENV.TEST_DURATION_CONSTANT || '5s';
+const TEST_DURATION_RAMP_UP = __ENV.TEST_DURATION_RAMP_UP || '10s';
+const TEST_DURATION_RAMP_DOWN = __ENV.TEST_DURATION_RAMP_DOWN || '5s';
 
 // Configuração de carga
 export const options = {
@@ -33,4 +34,10 @@ export default function () {
 
 	// Simula intervalo entre as requisições
 	sleep(1);
+}
+
+export function handleSummary(data) {
+	return {
+		"summary.html": htmlReport(data),
+	};
 }

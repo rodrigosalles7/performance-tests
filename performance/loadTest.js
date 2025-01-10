@@ -38,6 +38,6 @@ export default function () {
 
 export function handleSummary(data) {
 	return {
-		"index.json": htmlReport(data),
+		"index.html": htmlReport(data),
 	};
 }

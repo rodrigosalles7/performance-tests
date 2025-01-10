@@ -32,6 +32,15 @@ on:
         required: true
         default: 'https://hml2.ilotto.com.br'
 
+env:
+  VIRTUAL_USERS_RAMP_UP: ${{ secrets.VIRTUAL_USERS_RAMP_UP }}
+  VIRTUAL_USERS_CONSTANT: ${{ secrets.VIRTUAL_USERS_CONSTANT }}
+  VIRTUAL_USERS_RAMP_DOWN: ${{ secrets.VIRTUAL_USERS_RAMP_DOWN }}
+  TEST_DURATION_RAMP_UP: ${{ secrets.TEST_DURATION_RAMP_UP }}
+  TEST_DURATION_CONSTANT: ${{ secrets.TEST_DURATION_CONSTANT }}
+  TEST_DURATION_RAMP_DOWN: ${{ secrets.TEST_DURATION_RAMP_DOWN }}
+  BASE_URL: ${{ secrets.BASE_URL }}
+
 jobs:
   load-test:
     runs-on: ubuntu-latest
@@ -46,6 +55,19 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y docker-compose
+
+      - name: Set up environment variables
+        run: |
+          echo "VIRTUAL_USERS_RAMP_UP=${{ github.event.inputs.virtual_users_ramp_up }}" >> $GITHUB_ENV
+          echo "VIRTUAL_USERS_CONSTANT=${{ github.event.inputs.virtual_users_constant }}" >> $GITHUB_ENV
+          echo "VIRTUAL_USERS_RAMP_DOWN=${{ github.event.inputs.virtual_users_ramp_down }}" >> $GITHUB_ENV
+          echo "TEST_DURATION_RAMP_UP=${{ github.event.inputs.test_duration_ramp_up }}" >> $GITHUB_ENV
+          echo "TEST_DURATION_CONSTANT=${{ github.event.inputs.test_duration_constant }}" >> $GITHUB_ENV
+          echo "TEST_DURATION_RAMP_DOWN=${{ github.event.inputs.test_duration_ramp_down }}" >> $GITHUB_ENV
+          echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
+
+      # - name: Run K6 load test
+      #   run: docker-compose up --build
 
       - name: Run K6 load test
         run: |
@@ -63,3 +85,11 @@ jobs:
         with:
           name: K6 Load Test Report
           path: performance/index.html
+
+      - run: cd performance & ls & mkdir report & mv index.html report
+
+      - name: Upload K6 report
+        uses: actions/upload-artifact@v3
+        with:
+          name: k6-report
+          path: report

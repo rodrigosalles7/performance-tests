@@ -17,6 +17,4 @@ services:
       - ./debug:/app/debug
     user: root
     working_dir: /app
-    # entrypoint: ["sh", "-c"]
-    # command: ["k6 run /app/performance/loadTest.js"]
     entrypoint: [ "k6", "run", "/app/performance/loadTest.js" ]

@@ -68,10 +68,14 @@ jobs:
 
       - name: Run K6 load test
         run: |
-          docker-compose run --rm --user root k6-load-test
+          docker-compose run --rm --user root k6-load-test sh
+          k6 run loadTest.js
 
       - name: List performance directory
         run: ls -l performance/
+
+      - name: List performance directory2
+        run: ls -l ./
 
       - name: Upload K6 HTML Report
         uses: actions/upload-artifact@v4

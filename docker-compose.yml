@@ -12,8 +12,6 @@ services:
       BASE_URL: ${BASE_URL}
     volumes:
       - ./performance:/app/performance
-      - ./debug:/app/debug
-      - ./results:/app/performance/results  # Adicionado para persistir o relatório
     working_dir: /app
     entrypoint: ["sh", "-c"]
-    command: ["k6 run /app/performance/loadTest.js -o html=/app/performance/results/index.html"]  # Modificado para gerar o relatório HTML
+    command: ["k6 run /app/performance/loadTest.js"]

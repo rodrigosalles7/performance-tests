@@ -66,13 +66,13 @@ jobs:
           echo "TEST_DURATION_RAMP_DOWN=${{ github.event.inputs.test_duration_ramp_down }}" >> $GITHUB_ENV
           echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
 
-      # - name: Run K6 load test
-      #   run: docker-compose up --build
-
       - name: Run K6 load test
-        run: |
-          docker-compose up --build -d k6-load-test
-          docker-compose run k6-load-test k6 run /app/performance/loadTest.js
+        run: docker-compose up --build
+
+      # - name: Run K6 load test
+      #   run: |
+      #     docker-compose up --build -d k6-load-test
+      #     docker-compose run k6-load-test k6 run /app/performance/loadTest.js
 
       - name: List performance directory
         run: ls -l performance/

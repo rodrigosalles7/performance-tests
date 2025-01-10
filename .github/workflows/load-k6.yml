@@ -67,10 +67,14 @@ jobs:
           echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
 
       - name: Run K6 load test
+        uses: grafana/k6-action@v0.2.0
         run: |
           docker-compose run --rm --user root k6-load-test sh
           cd performance/
           k6 run loadTest.js
+
+      # - name: Run K6 load test
+      #   run: docker-compose up --build
 
       - name: List performance directory
         run: ls -l performance/

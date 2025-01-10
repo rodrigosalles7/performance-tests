@@ -68,7 +68,7 @@ jobs:
 
       - name: Run K6 load test
         run: |
-          docker-compose run --rm --user root k6-load-test sh -c "k6 run /app/performance/loadTest.js"
+          docker-compose run --rm --user root k6-load-test
 
       - name: List performance directory
         run: ls -l performance/

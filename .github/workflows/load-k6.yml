@@ -67,29 +67,14 @@ jobs:
           echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
 
       - name: Run K6 load test
-        run: docker-compose up --build
-
-      # - name: Run K6 load test
-      #   run: |
-      #     docker-compose up --build -d k6-load-test
-      #     docker-compose run k6-load-test k6 run /app/performance/loadTest.js
+        run: |
+          docker-compose run --rm --user root k6-load-test sh -c "k6 run /app/performance/loadTest.js"
 
       - name: List performance directory
         run: ls -l performance/
-
-      - name: List performance directory2
-        run: ls -l ./
 
       - name: Upload K6 HTML Report
         uses: actions/upload-artifact@v4
         with:
           name: K6 Load Test Report
           path: performance/index.html
-
-      - run: cd performance & ls & mkdir report & mv index.html report
-
-      - name: Upload K6 report
-        uses: actions/upload-artifact@v3
-        with:
-          name: k6-report
-          path: report

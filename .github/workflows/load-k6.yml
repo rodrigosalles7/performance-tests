@@ -48,7 +48,7 @@ jobs:
           sudo apt-get install -y docker-compose
 
       - name: Run K6 load test
-        run: docker-compose run --rm --user root k6-load-test k6 run /app/performance/loadTest.js
+        run: docker-compose up --build k6-load-test
 
       - name: List performance directory
         run: ls -l performance/

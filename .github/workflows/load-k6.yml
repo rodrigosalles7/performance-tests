@@ -78,20 +78,8 @@ jobs:
           cd performance/
           k6 run loadTest.js
 
-      - name: Move index.html to report directory
-        run: |
-          mkdir report
-          mv performance/index.html report
-
       - name: Upload K6 HTML Report
         uses: actions/upload-artifact@v4
         with:
           name: K6 Load Test Report
-          path: report
-
-      - name: Publish Report to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: report
+          path: performance/index.html

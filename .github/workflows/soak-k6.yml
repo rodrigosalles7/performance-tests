@@ -83,7 +83,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: K6 Soak Test Report
-          path: performance/reports/index.html
+          path: performance/reports/indexSoak.html
 
       - name: Publish Reports to Separate Repo
         uses: peaceiris/actions-gh-pages@v4

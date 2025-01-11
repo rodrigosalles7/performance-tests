@@ -75,6 +75,7 @@ jobs:
       - name: Run K6 load test
         run: |
           docker-compose run --rm --user root k6-load-test sh
+          mkdir -p performance/reports
           cd performance/
           k6 run loadTest.js
 
@@ -82,7 +83,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: K6 Load Test Report
-          path: performance/reports/
+          path: performance/reports/index.html
 
       - name: Publish Reports to Separate Repo
         uses: peaceiris/actions-gh-pages@v4

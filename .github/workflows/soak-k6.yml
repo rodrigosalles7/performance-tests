@@ -3,26 +3,46 @@ name: K6 Soak Test
 on:
   workflow_dispatch:
     inputs:
-      virtual_users:
-        description: 'Número de usuários virtuais'
+      stage1_duration:
+        description: 'Duração do estágio 1'
         required: true
-        default: '10'
-      test_duration:
-        description: 'Duração do teste (ex: 20m)'
+        default: '2m'
+      stage1_target:
+        description: 'Alvo do estágio 1'
         required: true
-        default: '10s'
+        default: '400'
+      stage2_duration:
+        description: 'Duração do estágio 2'
+        required: true
+        default: '3h30m'
+      stage2_target:
+        description: 'Alvo do estágio 2'
+        required: true
+        default: '400'
+      stage3_duration:
+        description: 'Duração do estágio 3'
+        required: true
+        default: '2m'
+      stage3_target:
+        description: 'Alvo do estágio 3'
+        required: true
+        default: '0'
       base_url:
         description: 'Base URL para teste'
         required: true
         default: 'https://hml2.ilotto.com.br'
 
 env:
-  VIRTUAL_USERS: ${{ secrets.VIRTUAL_USERS }}
-  TEST_DURATION: ${{ secrets.TEST_DURATION }}
+  STAGE1_DURATION: ${{ secrets.STAGE1_DURATION }}
+  STAGE1_TARGET: ${{ secrets.STAGE1_TARGET }}
+  STAGE2_DURATION: ${{ secrets.STAGE2_DURATION }}
+  STAGE2_TARGET: ${{ secrets.STAGE2_TARGET }}
+  STAGE3_DURATION: ${{ secrets.STAGE3_DURATION }}
+  STAGE3_TARGET: ${{ secrets.STAGE3_TARGET }}
   BASE_URL: ${{ secrets.BASE_URL }}
 
 jobs:
-  load-test:
+  soak-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -36,11 +56,39 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
+      - name: Install k6
+        run: |
+          curl -sL https://github.com/grafana/k6/releases/download/v0.42.0/k6-v0.42.0-linux-amd64.deb -o k6.deb
+          sudo dpkg -i k6.deb
+          sudo apt-get install -f
+
       - name: Set up environment variables
         run: |
-          echo "VIRTUAL_USERS=${{ github.event.inputs.virtual_users }}" >> $GITHUB_ENV
-          echo "TEST_DURATION=${{ github.event.inputs.test_duration }}" >> $GITHUB_ENV
+          echo "STAGE1_DURATION=${{ github.event.inputs.stage1_duration }}" >> $GITHUB_ENV
+          echo "STAGE1_TARGET=${{ github.event.inputs.stage1_target }}" >> $GITHUB_ENV
+          echo "STAGE2_DURATION=${{ github.event.inputs.stage2_duration }}" >> $GITHUB_ENV
+          echo "STAGE2_TARGET=${{ github.event.inputs.stage2_target }}" >> $GITHUB_ENV
+          echo "STAGE3_DURATION=${{ github.event.inputs.stage3_duration }}" >> $GITHUB_ENV
+          echo "STAGE3_TARGET=${{ github.event.inputs.stage3_target }}" >> $GITHUB_ENV
           echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
 
-      - name: Run K6 load test
-        run: docker-compose -f docker-compose.yml up --build
+      - name: Run K6 soak test
+        run: |
+          docker-compose run --rm --user root k6-soak-test sh
+          mkdir -p performance/reports
+          cd performance/
+          k6 run soakTest.js
+
+      - name: Upload K6 HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: K6 Soak Test Report
+          path: performance/reports/index.html
+
+      - name: Publish Reports to Separate Repo
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.PERFORMANCE_REPORTS_REPO_TOKEN }}
+          external_repository: rodrigosalles7/performance-test-reports
+          publish_dir: ./performance/reports
+          destination_dir: soak-tests/reports

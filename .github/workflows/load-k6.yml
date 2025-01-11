@@ -83,3 +83,12 @@ jobs:
         with:
           name: K6 Load Test Report
           path: performance/index.html
+
+      - name: Publish Reports to Separate Repo
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.PERFORMANCE_REPORTS_REPO_TOKEN }}
+          external_repository: rodrigosalles7/performance-test-reports
+          publish_dir: ./performance
+          destination_dir: load-tests/reports
+          cache-control: no-cache

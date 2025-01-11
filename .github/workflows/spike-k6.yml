@@ -3,26 +3,51 @@ name: K6 Spike Test
 on:
   workflow_dispatch:
     inputs:
-      virtual_users:
-        description: 'Número de usuários virtuais'
+      spike_vus_high:
+        description: 'VUs em Spike'
         required: true
-        default: '10'
-      test_duration:
-        description: 'Duração do teste (ex: 20m)'
+        default: '1400'
+      spike_vus_low:
+        description: 'VUs em estado normal'
+        required: true
+        default: '100'
+      spike_duration_short:
+        description: 'Duração curta do Spike'
+        required: true
+        default: '10s'
+      spike_duration_long:
+        description: 'Duração longa do Spike'
+        required: true
+        default: '3m'
+      spike_ramp_up:
+        description: 'Tempo de Ramp-Up'
+        required: true
+        default: '1s'
+      spike_ramp_down:
+        description: 'Tempo de Ramp-Down'
         required: true
         default: '10s'
       base_url:
         description: 'Base URL para teste'
         required: true
-        default: 'https://hml2.ilotto.com.br'
+        default: 'https://api-hml2.ilotto.com.br'
+      winners_feed_path:
+        description: 'Caminho do feed de vencedores'
+        required: true
+        default: '/bff/customer/winners-feed?orderBy=date&skip=0&take=10'
 
 env:
-  VIRTUAL_USERS: ${{ secrets.VIRTUAL_USERS }}
-  TEST_DURATION: ${{ secrets.TEST_DURATION }}
+  SPIKE_VUS_HIGH: ${{ secrets.SPIKE_VUS_HIGH }}
+  SPIKE_VUS_LOW: ${{ secrets.SPIKE_VUS_LOW }}
+  SPIKE_DURATION_SHORT: ${{ secrets.SPIKE_DURATION_SHORT }}
+  SPIKE_DURATION_LONG: ${{ secrets.SPIKE_DURATION_LONG }}
+  SPIKE_RAMP_UP: ${{ secrets.SPIKE_RAMP_UP }}
+  SPIKE_RAMP_DOWN: ${{ secrets.SPIKE_RAMP_DOWN }}
   BASE_URL: ${{ secrets.BASE_URL }}
+  WINNERS_FEED_PATH: ${{ secrets.WINNERS_FEED_PATH }}
 
 jobs:
-  load-test:
+  spike-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -36,11 +61,40 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
+      - name: Install k6
+        run: |
+          curl -sL https://github.com/grafana/k6/releases/download/v0.42.0/k6-v0.42.0-linux-amd64.deb -o k6.deb
+          sudo dpkg -i k6.deb
+          sudo apt-get install -f
+
       - name: Set up environment variables
         run: |
-          echo "VIRTUAL_USERS=${{ github.event.inputs.virtual_users }}" >> $GITHUB_ENV
-          echo "TEST_DURATION=${{ github.event.inputs.test_duration }}" >> $GITHUB_ENV
+          echo "SPIKE_VUS_HIGH=${{ github.event.inputs.spike_vus_high }}" >> $GITHUB_ENV
+          echo "SPIKE_VUS_LOW=${{ github.event.inputs.spike_vus_low }}" >> $GITHUB_ENV
+          echo "SPIKE_DURATION_SHORT=${{ github.event.inputs.spike_duration_short }}" >> $GITHUB_ENV
+          echo "SPIKE_DURATION_LONG=${{ github.event.inputs.spike_duration_long }}" >> $GITHUB_ENV
+          echo "SPIKE_RAMP_UP=${{ github.event.inputs.spike_ramp_up }}" >> $GITHUB_ENV
+          echo "SPIKE_RAMP_DOWN=${{ github.event.inputs.spike_ramp_down }}" >> $GITHUB_ENV
           echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
+          echo "WINNERS_FEED_PATH=${{ github.event.inputs.winners_feed_path }}" >> $GITHUB_ENV
 
-      - name: Run K6 load test
-        run: docker-compose -f docker-compose.yml up --build
+      - name: Run K6 spike test
+        run: |
+          docker-compose run --rm --user root k6-spike-test sh
+          mkdir -p performance/reports
+          cd performance/
+          k6 run spikeTest.js
+
+      - name: Upload K6 HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: K6 Spike Test Report
+          path: performance/reports/indexSpike.html
+
+      - name: Publish Reports to Separate Repo
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.PERFORMANCE_REPORTS_REPO_TOKEN }}
+          external_repository: rodrigosalles7/performance-test-reports
+          publish_dir: ./performance/reports
+          destination_dir: spike-tests/reports

@@ -31,3 +31,20 @@ services:
     working_dir: /app
     entrypoint: ["sh", "-c"]
     command: ["k6 run /app/performance/soakTest.js"]
+
+  k6-spike-test:
+    build: .
+    environment:
+      SPIKE_VUS_HIGH: ${SPIKE_VUS_HIGH}
+      SPIKE_VUS_LOW: ${SPIKE_VUS_LOW}
+      SPIKE_DURATION_SHORT: ${SPIKE_DURATION_SHORT}
+      SPIKE_DURATION_LONG: ${SPIKE_DURATION_LONG}
+      SPIKE_RAMP_UP: ${SPIKE_RAMP_UP}
+      SPIKE_RAMP_DOWN: ${SPIKE_RAMP_DOWN}
+      BASE_URL: ${BASE_URL}
+      WINNERS_FEED_PATH: ${WINNERS_FEED_PATH}
+    volumes:
+      - ./performance:/app/performance
+    working_dir: /app
+    entrypoint: ["sh", "-c"]
+    command: ["k6 run /app/performance/spikeTest.js"]

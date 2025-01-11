@@ -82,7 +82,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: K6 Load Test Report
-          path: performance/index.html
+          path: performance/reports/index.html
 
       - name: Publish Reports to Separate Repo
         uses: peaceiris/actions-gh-pages@v4

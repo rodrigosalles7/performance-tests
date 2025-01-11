@@ -42,7 +42,6 @@ services:
       SPIKE_RAMP_UP: ${SPIKE_RAMP_UP}
       SPIKE_RAMP_DOWN: ${SPIKE_RAMP_DOWN}
       BASE_URL: ${BASE_URL}
-      WINNERS_FEED_PATH: ${WINNERS_FEED_PATH}
     volumes:
       - ./performance:/app/performance
     working_dir: /app

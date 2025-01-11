@@ -31,10 +31,6 @@ on:
         description: 'Base URL para teste'
         required: true
         default: 'https://api-hml2.ilotto.com.br'
-      winners_feed_path:
-        description: 'Caminho do feed de vencedores'
-        required: true
-        default: '/bff/customer/winners-feed?orderBy=date&skip=0&take=10'
 
 env:
   SPIKE_VUS_HIGH: ${{ secrets.SPIKE_VUS_HIGH }}
@@ -44,7 +40,6 @@ env:
   SPIKE_RAMP_UP: ${{ secrets.SPIKE_RAMP_UP }}
   SPIKE_RAMP_DOWN: ${{ secrets.SPIKE_RAMP_DOWN }}
   BASE_URL: ${{ secrets.BASE_URL }}
-  WINNERS_FEED_PATH: ${{ secrets.WINNERS_FEED_PATH }}
 
 jobs:
   spike-test:
@@ -76,7 +71,6 @@ jobs:
           echo "SPIKE_RAMP_UP=${{ github.event.inputs.spike_ramp_up }}" >> $GITHUB_ENV
           echo "SPIKE_RAMP_DOWN=${{ github.event.inputs.spike_ramp_down }}" >> $GITHUB_ENV
           echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
-          echo "WINNERS_FEED_PATH=${{ github.event.inputs.winners_feed_path }}" >> $GITHUB_ENV
 
       - name: Run K6 spike test
         run: |

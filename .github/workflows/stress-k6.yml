@@ -3,26 +3,51 @@ name: K6 Stress Test
 on:
   workflow_dispatch:
     inputs:
-      virtual_users:
-        description: 'Número de usuários virtuais'
+      stress_vus_low:
+        description: 'VUs baixos'
         required: true
-        default: '10'
-      test_duration:
-        description: 'Duração do teste (ex: 20m)'
+        default: '100'
+      stress_vus_medium:
+        description: 'VUs médios'
         required: true
-        default: '10s'
+        default: '200'
+      stress_vus_high:
+        description: 'VUs altos'
+        required: true
+        default: '300'
+      stress_vus_max:
+        description: 'VUs máximos'
+        required: true
+        default: '400'
+      stress_duration_short:
+        description: 'Duração curta'
+        required: true
+        default: '2m'
+      stress_duration_long:
+        description: 'Duração longa'
+        required: true
+        default: '5m'
+      stress_ramp_down:
+        description: 'Duração de ramp-down'
+        required: true
+        default: '10m'
       base_url:
         description: 'Base URL para teste'
         required: true
-        default: 'https://hml2.ilotto.com.br'
+        default: 'https://api-hml2.ilotto.com.br'
 
 env:
-  VIRTUAL_USERS: ${{ secrets.VIRTUAL_USERS }}
-  TEST_DURATION: ${{ secrets.TEST_DURATION }}
+  STRESS_VUS_LOW: ${{ secrets.STRESS_VUS_LOW }}
+  STRESS_VUS_MEDIUM: ${{ secrets.STRESS_VUS_MEDIUM }}
+  STRESS_VUS_HIGH: ${{ secrets.STRESS_VUS_HIGH }}
+  STRESS_VUS_MAX: ${{ secrets.STRESS_VUS_MAX }}
+  STRESS_DURATION_SHORT: ${{ secrets.STRESS_DURATION_SHORT }}
+  STRESS_DURATION_LONG: ${{ secrets.STRESS_DURATION_LONG }}
+  STRESS_RAMP_DOWN: ${{ secrets.STRESS_RAMP_DOWN }}
   BASE_URL: ${{ secrets.BASE_URL }}
 
 jobs:
-  load-test:
+  stress-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -36,11 +61,40 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
+      - name: Install k6
+        run: |
+          curl -sL https://github.com/grafana/k6/releases/download/v0.42.0/k6-v0.42.0-linux-amd64.deb -o k6.deb
+          sudo dpkg -i k6.deb
+          sudo apt-get install -f
+
       - name: Set up environment variables
         run: |
-          echo "VIRTUAL_USERS=${{ github.event.inputs.virtual_users }}" >> $GITHUB_ENV
-          echo "TEST_DURATION=${{ github.event.inputs.test_duration }}" >> $GITHUB_ENV
+          echo "STRESS_VUS_LOW=${{ github.event.inputs.stress_vus_low }}" >> $GITHUB_ENV
+          echo "STRESS_VUS_MEDIUM=${{ github.event.inputs.stress_vus_medium }}" >> $GITHUB_ENV
+          echo "STRESS_VUS_HIGH=${{ github.event.inputs.stress_vus_high }}" >> $GITHUB_ENV
+          echo "STRESS_VUS_MAX=${{ github.event.inputs.stress_vus_max }}" >> $GITHUB_ENV
+          echo "STRESS_DURATION_SHORT=${{ github.event.inputs.stress_duration_short }}" >> $GITHUB_ENV
+          echo "STRESS_DURATION_LONG=${{ github.event.inputs.stress_duration_long }}" >> $GITHUB_ENV
+          echo "STRESS_RAMP_DOWN=${{ github.event.inputs.stress_ramp_down }}" >> $GITHUB_ENV
           echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
 
-      - name: Run K6 load test
-        run: docker-compose -f docker-compose.yml up --build
+      - name: Run K6 stress test
+        run: |
+          docker-compose run --rm --user root k6-stress-test sh
+          mkdir -p performance/reports
+          cd performance/
+          k6 run stressTest.js
+
+      - name: Upload K6 HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: K6 Stress Test Report
+          path: performance/reports/indexStress.html
+
+      - name: Publish Reports to Separate Repo
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.PERFORMANCE_REPORTS_REPO_TOKEN }}
+          external_repository: rodrigosalles7/performance-test-reports
+          publish_dir: ./performance/reports
+          destination_dir: stress-tests/reports

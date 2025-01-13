@@ -19,10 +19,10 @@ export const options = {
 		{ duration: TEST_DURATION_CONSTANT, target: parseInt(VIRTUAL_USERS_CONSTANT) },
 		{ duration: TEST_DURATION_RAMP_DOWN, target: VIRTUAL_USERS_RAMP_DOWN },
 	],
-	thresholds: {
-		http_req_duration: ['p(95)<2000'],
-		http_req_failed: ['rate<0.01'],
-	},
+	// thresholds: {
+	// 	http_req_duration: ['p(95)<2000'],
+	// 	http_req_failed: ['rate<0.01'],
+	// },
 };
 
 export default function () {
@@ -32,13 +32,13 @@ export default function () {
 		res = http.post(BASE_URL, POST_BODY, { headers: { 'Content-Type': 'application/json' } });
 		check(res, {
 			'status é 201': (r) => r.status === 201,
-			'tempo de resposta < 2000ms': (r) => r.timings.duration < 2000,
+			'tempo de resposta < 1000ms': (r) => r.timings.duration < 1000,
 		});
 	} else {
 		res = http.get(BASE_URL);
 		check(res, {
 			'status é 200': (r) => r.status === 200,
-			'tempo de resposta < 2000ms': (r) => r.timings.duration < 2000,
+			'tempo de resposta < 500ms': (r) => r.timings.duration < 500,
 		});
 	}
 

@@ -9,6 +9,10 @@ on:
         options:
           - GET
           - POST
+      base_url:
+        description: 'Base URL para teste'
+        required: true
+        default: 'https://api-hml2.ilotto.com.br'
       post_body:
         description: 'Corpo da requisição POST (JSON)'
         required: false
@@ -37,10 +41,6 @@ on:
         description: 'Tempo de Ramp-Down (ex: 5m)'
         required: true
         default: '5s'
-      base_url:
-        description: 'Base URL para teste'
-        required: true
-        default: 'https://hml2.ilotto.com.br'
 
 env:
   VIRTUAL_USERS_RAMP_UP: ${{ secrets.VIRTUAL_USERS_RAMP_UP }}

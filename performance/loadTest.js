@@ -37,6 +37,7 @@ export default function () {
 		});
 	} else {
 		res = http.get(BASE_URL);
+		console.log(res)
 		check(res, {
 			'status é 200': (r) => r.status === 200,
 			'tempo de resposta < 500ms': (r) => r.timings.duration < 500,

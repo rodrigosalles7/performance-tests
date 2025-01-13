@@ -9,7 +9,7 @@ const VIRTUAL_USERS_CONSTANT = __ENV.VIRTUAL_USERS_CONSTANT || 1;
 const VIRTUAL_USERS_RAMP_UP = __ENV.VIRTUAL_USERS_RAMP_UP || 1;
 const VIRTUAL_USERS_RAMP_DOWN = __ENV.VIRTUAL_USERS_RAMP_DOWN || 0;
 const TEST_DURATION_CONSTANT = __ENV.TEST_DURATION_CONSTANT || '5s';
-const TEST_DURATION_RAMP_UP = __ENV.TEST_DURATION_RAMP_UP || '10s';
+const TEST_DURATION_RAMP_UP = __ENV.TEST_DURATION_RAMP_UP || '5s';
 const TEST_DURATION_RAMP_DOWN = __ENV.TEST_DURATION_RAMP_DOWN || '5s';
 
 // Configuração de carga
@@ -30,6 +30,7 @@ export default function () {
 
 	if (REQUEST_TYPE.toUpperCase() === 'POST') {
 		res = http.post(BASE_URL, POST_BODY, { headers: { 'Content-Type': 'application/json' } });
+		console.log(res)
 		check(res, {
 			'status é 201': (r) => r.status === 201,
 			'tempo de resposta < 1000ms': (r) => r.timings.duration < 1000,

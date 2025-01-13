@@ -12,7 +12,7 @@ function generateCPF() {
 
 // Configuração do teste de carga do k6
 export const options = {
-    vus: 15, // Número de usuários virtuais
+    vus: 1, // Número de usuários virtuais
     duration: '1h', // Duração do teste
     thresholds: {
         http_req_duration: ['p(95)<2000'], // 95% das requisições devem estar abaixo de 2000ms
@@ -44,7 +44,8 @@ function buyTicket(cpf, customerId) {
         email: `${Math.random().toString(36).substring(2, 10)}@teste.com`,
         phone: '5535999999999',
         raffleId: 'b5af8b36-015e-4d1b-a69d-ac2e22f5f663',
-        ticketsAmount: Math.floor(Math.random() * (10 - 1 + 1)) + 1,
+        ticketsAmount: 10000
+        // ticketsAmount: Math.floor(Math.random() * (10 - 1 + 1)) + 1,
     });
 
     const params = {

@@ -3,6 +3,14 @@ name: K6 Load Test
 on:
   workflow_dispatch:
     inputs:
+      request_type:
+        description: 'Tipo de requisição (GET ou POST)'
+        required: true
+        default: 'GET'
+      post_body:
+        description: 'Corpo da requisição POST (JSON)'
+        required: false
+        default: '{}'
       virtual_users_ramp_up:
         description: 'VUs em Ramp-Up'
         required: true
@@ -40,6 +48,8 @@ env:
   TEST_DURATION_CONSTANT: ${{ secrets.TEST_DURATION_CONSTANT }}
   TEST_DURATION_RAMP_DOWN: ${{ secrets.TEST_DURATION_RAMP_DOWN }}
   BASE_URL: ${{ secrets.BASE_URL }}
+  REQUEST_TYPE: ${{ secrets.REQUEST_TYPE }}
+  POST_BODY: ${{ secrets.POST_BODY }}
 
 jobs:
   load-test:
@@ -71,6 +81,8 @@ jobs:
           echo "TEST_DURATION_CONSTANT=${{ github.event.inputs.test_duration_constant }}" >> $GITHUB_ENV
           echo "TEST_DURATION_RAMP_DOWN=${{ github.event.inputs.test_duration_ramp_down }}" >> $GITHUB_ENV
           echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
+          echo "REQUEST_TYPE=${{ github.event.inputs.request_type }}" >> $GITHUB_ENV
+          echo "POST_BODY=${{ github.event.inputs.post_body }}" >> $GITHUB_ENV
 
       - name: Run K6 load test
         run: |

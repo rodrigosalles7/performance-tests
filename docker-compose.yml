@@ -10,11 +10,13 @@ services:
       TEST_DURATION_RAMP_UP: ${TEST_DURATION_RAMP_UP}
       TEST_DURATION_RAMP_DOWN: ${TEST_DURATION_RAMP_DOWN}
       BASE_URL: ${BASE_URL}
+      REQUEST_TYPE: ${REQUEST_TYPE}
+      POST_BODY: ${POST_BODY}
     volumes:
       - ./performance:/app/performance
     working_dir: /app
-    entrypoint: ["sh", "-c"]
-    command: ["k6 run /app/performance/loadTest.js"]
+    entrypoint: [ "sh", "-c" ]
+    command: [ "k6 run /app/performance/loadTest.js" ]
 
   k6-soak-test:
     build: .
@@ -29,8 +31,8 @@ services:
     volumes:
       - ./performance:/app/performance
     working_dir: /app
-    entrypoint: ["sh", "-c"]
-    command: ["k6 run /app/performance/soakTest.js"]
+    entrypoint: [ "sh", "-c" ]
+    command: [ "k6 run /app/performance/soakTest.js" ]
 
   k6-spike-test:
     build: .
@@ -45,8 +47,8 @@ services:
     volumes:
       - ./performance:/app/performance
     working_dir: /app
-    entrypoint: ["sh", "-c"]
-    command: ["k6 run /app/performance/spikeTest.js"]
+    entrypoint: [ "sh", "-c" ]
+    command: [ "k6 run /app/performance/spikeTest.js" ]
 
   k6-stress-test:
     build: .
@@ -62,5 +64,5 @@ services:
     volumes:
       - ./performance:/app/performance
     working_dir: /app
-    entrypoint: ["sh", "-c"]
-    command: ["k6 run /app/performance/stressTest.js"]
+    entrypoint: [ "sh", "-c" ]
+    command: [ "k6 run /app/performance/stressTest.js" ]

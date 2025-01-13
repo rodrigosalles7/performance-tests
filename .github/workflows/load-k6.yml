@@ -4,9 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       request_type:
+        type: choice
         description: 'Tipo de requisição (GET ou POST)'
-        required: true
-        default: 'GET'
+        options:
+          - GET
+          - POST
       post_body:
         description: 'Corpo da requisição POST (JSON)'
         required: false

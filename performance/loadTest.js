@@ -4,7 +4,8 @@ import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporte
 
 const BASE_URL = __ENV.BASE_URL || 'https://api-hml2.ilotto.com.br/carts/purchase';
 const REQUEST_TYPE = __ENV.REQUEST_TYPE || 'POST'; // Variável de ambiente para GET ou POST
-const POST_BODY = __ENV.POST_BODY || '{"raffleId":"b5af8b36-015e-4d1b-a69d-ac2e22f5f663","ticketsAmount":10000,"customerId":"","name":"Rodrigo O. S.","email":"rodrigo.oliveira@scoder.com.br","cpf":"12622755635","phone":"5535992027336","birthDate":null,"purchaseWithPromotion":false}'; // Corpo da requisição POST, em formato JSON
+const POST_BODY = __ENV.POST_BODY || '{"raffleId":"028574ba-34ea-42fb-9a4f-9c443dbf6abf","ticketsAmount":1,"customerId":"","name":"Rodrigo O. S.","email":"rodrigo.oliveira@scoder.com.br","cpf":"12622755635","phone":"5535992027336","birthDate":null,"purchaseWithPromotion":false}'; // Corpo da requisição POST, em formato JSON
+// const POST_BODY = JSON.parse(__ENV.POST_BODY || '{"raffleId":"028574ba-34ea-42fb-9a4f-9c443dbf6abf","ticketsAmount":1,"customerId":"","name":"Rodrigo O. S.","email":"rodrigo.oliveira@scoder.com.br","cpf":"12622755635","phone":"5535992027336","birthDate":null,"purchaseWithPromotion":false}');
 const VIRTUAL_USERS_CONSTANT = __ENV.VIRTUAL_USERS_CONSTANT || 1;
 const VIRTUAL_USERS_RAMP_UP = __ENV.VIRTUAL_USERS_RAMP_UP || 1;
 const VIRTUAL_USERS_RAMP_DOWN = __ENV.VIRTUAL_USERS_RAMP_DOWN || 0;

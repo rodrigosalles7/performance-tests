@@ -84,7 +84,7 @@ jobs:
           echo "TEST_DURATION_RAMP_DOWN=${{ github.event.inputs.test_duration_ramp_down }}" >> $GITHUB_ENV
           echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
           echo "REQUEST_TYPE=${{ github.event.inputs.request_type }}" >> $GITHUB_ENV
-          echo '${{ inputs.post_body }}' > post_body.json
+          echo "${{ inputs.event.post_body }} >> post_body.json
 
         ### echo "POST_BODY=${{ github.event.inputs.post_body }}" >> $GITHUB_ENV
 

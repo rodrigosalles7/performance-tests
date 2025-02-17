@@ -86,7 +86,12 @@ O **Stress Test** aumenta progressivamente o número de usuários até que a apl
 ### Pré-requisitos
 
 - **k6** instalado em sua máquina.
-- **Docker** (opcional) para executar os testes em contêineres.
+  
+  ```bash
+    curl -s https://packagecloud.io/install/repositories/grafana/stable/script.deb.sh | sudo bash
+    sudo apt-get install k6
+    k6 version
+    ```
 
 ### Passos para execução:
 
@@ -95,25 +100,13 @@ O **Stress Test** aumenta progressivamente o número de usuários até que a apl
     ```bash
     git clone https://github.com/SEU_REPOSITORIO.git
     cd SEU_REPOSITORIO
+    cd performance
     ```
 
-2. Configure as variáveis de ambiente no arquivo `.env` ou defina diretamente no terminal:
-
-    ```bash
-    export VIRTUAL_USERS_CONSTANT=100
-    export TEST_DURATION_CONSTANT=5m
-    ```
-
-3. Execute o teste desejado. Por exemplo, para rodar o **Load Test**:
+2. Execute o teste desejado. Por exemplo, para rodar o **Load Test**:
 
     ```bash
     k6 run loadTest.js
-    ```
-
-    Ou, usando Docker:
-
-    ```bash
-    docker-compose up
     ```
 
 ---

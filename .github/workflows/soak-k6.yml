@@ -12,7 +12,7 @@ on:
       base_url:
         description: 'Base URL para teste'
         required: true
-        default: 'https://hml2.ilotto.com.br'
+        default: 'https://api-hml.ilotto.com.br'
       post_body:
         description: 'Corpo da requisição POST (JSON)'
         required: false

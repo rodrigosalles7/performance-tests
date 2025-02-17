@@ -1,7 +1,6 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
-import { open } from 'k6';
 
 const BASE_URL = __ENV.BASE_URL || 'https://api-hml.ilotto.com.br/carts/purchase';
 const REQUEST_TYPE = __ENV.REQUEST_TYPE || 'POST'; // Variável de ambiente para GET ou POST
@@ -31,12 +30,11 @@ export default function () {
 	let res;
 
 	if (REQUEST_TYPE.toUpperCase() === 'POST') {
-		const jsonData = JSON.parse(open('./post_body.json'));
-		res = http.post(BASE_URL, JSON.stringify(jsonData), { headers: { 'Content-Type': 'application/json' } });
+		const jsonData = open('./post_body.json', 'b');
+		res = http.post(BASE_URL, jsonData, { headers: { 'Content-Type': 'application/json' } });
+		console.log(res)
 		console.log('------------------------')
 		console.log(jsonData)
-		console.log('------------------------')
-		console.log(JSON.stringify(jsonData))
 		console.log('------------------------')
 
 		check(res, {

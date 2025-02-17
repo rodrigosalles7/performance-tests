@@ -30,7 +30,8 @@ export default function () {
 	let res;
 
 	if (REQUEST_TYPE.toUpperCase() === 'POST') {
-		res = http.post(BASE_URL, POST_BODY, { headers: { 'Content-Type': 'application/json' } });
+		const body = JSON.parse(fs.readFileSync('post_body.json', 'utf8'));
+		res = http.post(BASE_URL, JSON.stringify(body), { headers: { 'Content-Type': 'application/json' } });
 		console.log(res)
 		check(res, {
 			'status é 201': (r) => r.status === 201,

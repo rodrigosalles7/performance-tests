@@ -51,7 +51,7 @@ env:
   TEST_DURATION_RAMP_DOWN: ${{ secrets.TEST_DURATION_RAMP_DOWN }}
   BASE_URL: ${{ secrets.BASE_URL }}
   REQUEST_TYPE: ${{ secrets.REQUEST_TYPE }}
-  POST_BODY: ${{ secrets.POST_BODY }}
+  # POST_BODY: ${{ secrets.POST_BODY }}
 
 jobs:
   load-test:
@@ -84,7 +84,9 @@ jobs:
           echo "TEST_DURATION_RAMP_DOWN=${{ github.event.inputs.test_duration_ramp_down }}" >> $GITHUB_ENV
           echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
           echo "REQUEST_TYPE=${{ github.event.inputs.request_type }}" >> $GITHUB_ENV
-          echo "POST_BODY=${{ github.event.inputs.post_body }}" >> $GITHUB_ENV
+          echo '${{ inputs.post_body }}' > post_body.json
+
+        ### echo "POST_BODY=${{ github.event.inputs.post_body }}" >> $GITHUB_ENV
 
       - name: Run K6 load test
         run: |

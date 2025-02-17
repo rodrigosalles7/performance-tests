@@ -34,6 +34,12 @@ export default function () {
 		const jsonData = JSON.parse(open('./post_body.json'));
 		res = http.post(BASE_URL, JSON.stringify(jsonData), { headers: { 'Content-Type': 'application/json' } });
 		console.log(res)
+		console.log('------------------------')
+		console.log(jsonData)
+		console.log('------------------------')
+		console.log(JSON.stringify(jsonData))
+		console.log('------------------------')
+
 		check(res, {
 			'status é 201': (r) => r.status === 201,
 			'tempo de resposta < 1000ms': (r) => r.timings.duration < 1000,

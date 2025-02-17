@@ -26,11 +26,13 @@ export const options = {
 	// },
 };
 
+const jsonData = open('./post_body.json', 'b');
+
 export default function () {
 	let res;
 
 	if (REQUEST_TYPE.toUpperCase() === 'POST') {
-		const jsonData = open('./post_body.json', 'b');
+
 		res = http.post(BASE_URL, jsonData, { headers: { 'Content-Type': 'application/json' } });
 		console.log(res)
 		console.log('------------------------')

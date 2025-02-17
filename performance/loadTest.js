@@ -33,7 +33,6 @@ export default function () {
 	if (REQUEST_TYPE.toUpperCase() === 'POST') {
 		const jsonData = JSON.parse(open('./post_body.json'));
 		res = http.post(BASE_URL, JSON.stringify(jsonData), { headers: { 'Content-Type': 'application/json' } });
-		console.log(res)
 		console.log('------------------------')
 		console.log(jsonData)
 		console.log('------------------------')

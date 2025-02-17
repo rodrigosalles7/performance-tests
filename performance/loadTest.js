@@ -10,6 +10,7 @@ const VIRTUAL_USERS_RAMP_DOWN = __ENV.VIRTUAL_USERS_RAMP_DOWN || 0;
 const TEST_DURATION_CONSTANT = __ENV.TEST_DURATION_CONSTANT || '1s';
 const TEST_DURATION_RAMP_UP = __ENV.TEST_DURATION_RAMP_UP || '1s';
 const TEST_DURATION_RAMP_DOWN = __ENV.TEST_DURATION_RAMP_DOWN || '1s';
+const jsonData = JSON.parse(open('./post_body.json'));
 
 // Configuração de carga
 export const options = {
@@ -23,8 +24,6 @@ export const options = {
 	// 	http_req_failed: ['rate<0.01'],
 	// },
 };
-
-const jsonData = JSON.parse(open('./post_body.json'));
 
 export default function () {
 	let res;

@@ -11,6 +11,7 @@ const STRESS_VUS_MAX = __ENV.STRESS_VUS_MAX || 400;
 const STRESS_DURATION_SHORT = __ENV.STRESS_DURATION_SHORT || '2m';
 const STRESS_DURATION_LONG = __ENV.STRESS_DURATION_LONG || '5m';
 const STRESS_RAMP_DOWN = __ENV.STRESS_RAMP_DOWN || '10m';
+const jsonData = JSON.parse(open('./post_body.json'));
 
 export const options = {
   stages: [

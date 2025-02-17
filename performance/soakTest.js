@@ -10,6 +10,7 @@ const STAGE2_DURATION = __ENV.STAGE2_DURATION || '3h30m';
 const STAGE2_TARGET = __ENV.STAGE2_TARGET || 400;
 const STAGE3_DURATION = __ENV.STAGE3_DURATION || '2m';
 const STAGE3_TARGET = __ENV.STAGE3_TARGET || 0;
+const jsonData = JSON.parse(open('./post_body.json'));
 
 // Configuração do soak test
 export const options = {

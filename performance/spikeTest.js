@@ -10,6 +10,7 @@ const SPIKE_DURATION_SHORT = __ENV.SPIKE_DURATION_SHORT || '10s';
 const SPIKE_DURATION_LONG = __ENV.SPIKE_DURATION_LONG || '3m';
 const SPIKE_RAMP_UP = __ENV.SPIKE_RAMP_UP || '1s';
 const SPIKE_RAMP_DOWN = __ENV.SPIKE_RAMP_DOWN || '10s';
+const jsonData = JSON.parse(open('./post_body.json'));
 
 export const options = {
   stages: [

@@ -19,10 +19,10 @@ export const options = {
 		{ duration: TEST_DURATION_CONSTANT, target: parseInt(VIRTUAL_USERS_CONSTANT) },
 		{ duration: TEST_DURATION_RAMP_DOWN, target: VIRTUAL_USERS_RAMP_DOWN },
 	],
-	// thresholds: {
-	// 	http_req_duration: ['p(95)<2000'],
-	// 	http_req_failed: ['rate<0.01'],
-	// },
+	thresholds: {
+		http_req_duration: ['p(95)<500'],
+		http_req_failed: ['rate<0.01'],
+	},
 };
 
 export default function () {

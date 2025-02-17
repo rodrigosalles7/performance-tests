@@ -13,6 +13,10 @@ on:
         description: 'Base URL para teste'
         required: true
         default: 'https://api-hml2.ilotto.com.br'
+      post_body:
+        description: 'Corpo da requisição POST (JSON)'
+        required: false
+        default: '{}'
       spike_vus_high:
         description: 'VUs em Spike'
         required: true

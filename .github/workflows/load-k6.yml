@@ -12,11 +12,11 @@ on:
       base_url:
         description: 'Base URL para teste'
         required: true
-        default: 'https://api-hml2.ilotto.com.br'
+        default: 'https://api-hml.ilotto.com.br'
       post_body:
         description: 'Corpo da requisição POST (JSON)'
         required: false
-        default: '{}'
+        default: '{"raffleId":"ea65656e-7a6c-404c-afbc-7a5f233eff5c","ticketsAmount":1,"customerId":"020a1e1b-526b-416d-894c-ba6e7f2f5068","email":"rodrigo.oliveira@scoder.com.br","cpf":"12622755635","phone":"5535992027336","isFromBalance":false,"purchaseWithPromotion":false}'
       virtual_users_ramp_up:
         description: 'VUs em Ramp-Up'
         required: true

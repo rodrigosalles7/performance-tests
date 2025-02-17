@@ -1,11 +1,10 @@
 {
-    "raffleId": "b5af8b36-015e-4d1b-a69d-ac2e22f5f663",
-    "ticketsAmount": 10000,
-    "customerId": "",
-    "name": "Rodrigo O. S.",
-    "email": "rodrigo.oliveira@scoder.com.br",
-    "cpf": "12622755635",
-    "phone": "5535992027336",
-    "birthDate": null,
+    "raffleId": "ea65656e-7a6c-404c-afbc-7a5f233eff5c",
+    "ticketsAmount": 1,
+    "customerId": "2f777f86-66d8-4e22-8de4-34a83b9c6aa8",
+    "email": "pedro.carletti@scoder.com.br",
+    "cpf": "13500027636",
+    "phone": "5535992162852",
+    "isFromBalance": true,
     "purchaseWithPromotion": false
 }

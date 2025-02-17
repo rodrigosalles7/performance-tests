@@ -3,6 +3,16 @@ name: K6 Stress Test
 on:
   workflow_dispatch:
     inputs:
+      request_type:
+        type: choice
+        description: 'Tipo de requisição (GET ou POST)'
+        options:
+          - GET
+          - POST
+      base_url:
+        description: 'Base URL para teste'
+        required: true
+        default: 'https://api-hml2.ilotto.com.br'
       stress_vus_low:
         description: 'VUs baixos'
         required: true
@@ -31,10 +41,6 @@ on:
         description: 'Duração de ramp-down'
         required: true
         default: '10m'
-      base_url:
-        description: 'Base URL para teste'
-        required: true
-        default: 'https://api-hml2.ilotto.com.br'
 
 env:
   STRESS_VUS_LOW: ${{ secrets.STRESS_VUS_LOW }}
@@ -45,6 +51,7 @@ env:
   STRESS_DURATION_LONG: ${{ secrets.STRESS_DURATION_LONG }}
   STRESS_RAMP_DOWN: ${{ secrets.STRESS_RAMP_DOWN }}
   BASE_URL: ${{ secrets.BASE_URL }}
+  REQUEST_TYPE: ${{ secrets.REQUEST_TYPE }}
 
 jobs:
   stress-test:
@@ -77,6 +84,7 @@ jobs:
           echo "STRESS_DURATION_LONG=${{ github.event.inputs.stress_duration_long }}" >> $GITHUB_ENV
           echo "STRESS_RAMP_DOWN=${{ github.event.inputs.stress_ramp_down }}" >> $GITHUB_ENV
           echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
+          echo "REQUEST_TYPE=${{ github.event.inputs.request_type }}" >> $GITHUB_ENV
 
       - name: Run K6 stress test
         run: |

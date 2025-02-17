@@ -3,6 +3,16 @@ name: K6 Spike Test
 on:
   workflow_dispatch:
     inputs:
+      request_type:
+        type: choice
+        description: 'Tipo de requisição (GET ou POST)'
+        options:
+          - GET
+          - POST
+      base_url:
+        description: 'Base URL para teste'
+        required: true
+        default: 'https://api-hml2.ilotto.com.br'
       spike_vus_high:
         description: 'VUs em Spike'
         required: true
@@ -27,10 +37,6 @@ on:
         description: 'Tempo de Ramp-Down'
         required: true
         default: '10s'
-      base_url:
-        description: 'Base URL para teste'
-        required: true
-        default: 'https://api-hml2.ilotto.com.br'
 
 env:
   SPIKE_VUS_HIGH: ${{ secrets.SPIKE_VUS_HIGH }}
@@ -40,6 +46,7 @@ env:
   SPIKE_RAMP_UP: ${{ secrets.SPIKE_RAMP_UP }}
   SPIKE_RAMP_DOWN: ${{ secrets.SPIKE_RAMP_DOWN }}
   BASE_URL: ${{ secrets.BASE_URL }}
+  REQUEST_TYPE: ${{ secrets.REQUEST_TYPE }}
 
 jobs:
   spike-test:
@@ -71,6 +78,7 @@ jobs:
           echo "SPIKE_RAMP_UP=${{ github.event.inputs.spike_ramp_up }}" >> $GITHUB_ENV
           echo "SPIKE_RAMP_DOWN=${{ github.event.inputs.spike_ramp_down }}" >> $GITHUB_ENV
           echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
+          echo "REQUEST_TYPE=${{ github.event.inputs.request_type }}" >> $GITHUB_ENV
 
       - name: Run K6 spike test
         run: |

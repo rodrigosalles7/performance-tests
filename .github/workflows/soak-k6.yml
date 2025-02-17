@@ -3,6 +3,16 @@ name: K6 Soak Test
 on:
   workflow_dispatch:
     inputs:
+      request_type:
+        type: choice
+        description: 'Tipo de requisição (GET ou POST)'
+        options:
+          - GET
+          - POST
+      base_url:
+        description: 'Base URL para teste'
+        required: true
+        default: 'https://hml2.ilotto.com.br'
       stage1_duration:
         description: 'Duração do estágio 1'
         required: true
@@ -27,10 +37,6 @@ on:
         description: 'Alvo do estágio 3'
         required: true
         default: '0'
-      base_url:
-        description: 'Base URL para teste'
-        required: true
-        default: 'https://hml2.ilotto.com.br'
 
 env:
   STAGE1_DURATION: ${{ secrets.STAGE1_DURATION }}
@@ -40,6 +46,7 @@ env:
   STAGE3_DURATION: ${{ secrets.STAGE3_DURATION }}
   STAGE3_TARGET: ${{ secrets.STAGE3_TARGET }}
   BASE_URL: ${{ secrets.BASE_URL }}
+  REQUEST_TYPE: ${{ secrets.REQUEST_TYPE }}
 
 jobs:
   soak-test:
@@ -71,12 +78,14 @@ jobs:
           echo "STAGE3_DURATION=${{ github.event.inputs.stage3_duration }}" >> $GITHUB_ENV
           echo "STAGE3_TARGET=${{ github.event.inputs.stage3_target }}" >> $GITHUB_ENV
           echo "BASE_URL=${{ github.event.inputs.base_url }}" >> $GITHUB_ENV
+          echo "REQUEST_TYPE=${{ github.event.inputs.request_type }}" >> $GITHUB_ENV
 
       - name: Run K6 soak test
         run: |
           docker-compose run --rm --user root k6-soak-test sh
           mkdir -p performance/reports
           cd performance/
+          echo '${{ inputs.post_body }}' > post_body.json
           k6 run soakTest.js
 
       - name: Upload K6 HTML Report

@@ -89,6 +89,7 @@ jobs:
           docker-compose run --rm --user root k6-spike-test sh
           mkdir -p performance/reports
           cd performance/
+          echo '${{ inputs.post_body }}' > post_body.json
           k6 run spikeTest.js
 
       - name: Upload K6 HTML Report

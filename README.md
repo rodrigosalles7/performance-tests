@@ -1,81 +1,81 @@
-# Testes de Performance
+# Performance Testing
 
-Este repositório contém scripts de testes de performance utilizando o **k6** para avaliar o comportamento e a resiliência da aplicação. Os testes podem ser executados **localmente** ou pelo **workflow do GitHub Actions**.
+This repository contains performance testing scripts using **k6** to evaluate the application's behavior and resilience. Tests can be executed **locally** or via **GitHub Actions workflow**.
 
-Os testes realizados são:
+The tests performed are:
 
 - **Load Test**
 - **Soak Test**
 - **Spike Test**
 - **Stress Test**
 
-Cada teste tem um objetivo específico e ajuda a identificar diferentes aspectos de desempenho da aplicação.
+Each test has a specific objective and helps identify different aspects of the application's performance.
 
 ---
 
-## Tipos de Testes
+## Types of Tests
 
 ### 1. **Load Test**
 
-**Objetivo:** Avaliar o desempenho da aplicação sob uma carga constante e previsível.
+**Objective:** Evaluate the application's performance under a constant and predictable load.
 
-**Descrição:**  
-O **Load Test** simula um número fixo de usuários acessando a aplicação por um determinado período de tempo. O objetivo é verificar a estabilidade da aplicação em condições normais de tráfego.
+**Description:**  
+The **Load Test** simulates a fixed number of users accessing the application over a specific period. The goal is to verify the application's stability under normal traffic conditions.
 
-**Foco:**
-- Identificar tempos de resposta.
-- Verificar a taxa de erros e falhas.
-- Avaliar a capacidade de lidar com a carga constante.
+**Focus:**
+- Identify response times.
+- Check the error and failure rate.
+- Assess the ability to handle a constant load.
 
 ---
 
 ### 2. **Soak Test**
 
-**Objetivo:** Verificar a resiliência da aplicação em cenários de uso prolongado.
+**Objective:** Verify the application's resilience in prolonged usage scenarios.
 
-**Descrição:**  
-O **Soak Test** mantém uma carga constante de usuários por um período longo para identificar possíveis vazamentos de memória, degradação de desempenho e falhas que aparecem com o tempo.
+**Description:**  
+The **Soak Test** maintains a constant load of users for an extended period to identify potential memory leaks, performance degradation, and failures that appear over time.
 
-**Foco:**
-- Detectar falhas de estabilidade.
-- Verificar o consumo de recursos ao longo do tempo.
+**Focus:**
+- Detect stability failures.
+- Monitor resource consumption over time.
 
 ---
 
 ### 3. **Spike Test**
 
-**Objetivo:** Avaliar a capacidade da aplicação de lidar com picos de tráfego repentinos.
+**Objective:** Evaluate the application's ability to handle sudden traffic spikes.
 
-**Descrição:**  
-O **Spike Test** aumenta rapidamente o número de usuários para simular picos de acesso e analisa como a aplicação reage a essa situação.
+**Description:**  
+The **Spike Test** rapidly increases the number of users to simulate access spikes and analyzes how the application reacts to such situations.
 
-**Foco:**
-- Testar a capacidade de escalar rapidamente.
-- Avaliar a resiliência durante e após picos de tráfego.
+**Focus:**
+- Test the ability to scale quickly.
+- Assess resilience during and after traffic spikes.
 
 ---
 
 ### 4. **Stress Test**
 
-**Objetivo:** Identificar o limite máximo da aplicação em termos de carga.
+**Objective:** Identify the application's maximum load limit.
 
-**Descrição:**  
-O **Stress Test** aumenta progressivamente o número de usuários até que a aplicação atinja seu ponto de falha. Isso permite descobrir os limites e a capacidade máxima do sistema.
+**Description:**  
+The **Stress Test** progressively increases the number of users until the application reaches its breaking point. This helps determine the system's limits and maximum capacity.
 
-**Foco:**
-- Determinar o ponto de falha da aplicação.
-- Avaliar a recuperação após sobrecarga.
+**Focus:**
+- Determine the application's failure point.
+- Evaluate recovery after an overload.
 
 ---
 
-## Como Executar os Testes
+## How to Run the Tests
 
-Os testes podem ser executados **localmente** ou pelo **GitHub Actions**.
+Tests can be executed **locally** or via **GitHub Actions**.
 
-### Opção 1: Executar Localmente
+### Option 1: Run Locally
 
-#### **Pré-requisitos**
-- **k6** instalado na máquina.
+#### **Prerequisites**
+- **k6** installed on your machine.
 
   ```bash
   curl -s https://packagecloud.io/install/repositories/grafana/stable/script.deb.sh | sudo bash
@@ -83,16 +83,16 @@ Os testes podem ser executados **localmente** ou pelo **GitHub Actions**.
   k6 version
   ```
 
-#### **Passos para Execução**
+#### **Execution Steps**
 
-1. Clone este repositório:
+1. Clone this repository:
 
     ```bash
-    git clone https://github.com/SEU_REPOSITORIO.git
-    cd SEU_REPOSITORIO/performance
+    git clone https://github.com/YOUR_REPOSITORY.git
+    cd YOUR_REPOSITORY/performance
     ```
 
-2. Execute o teste desejado. Por exemplo, para rodar o **Load Test**:
+2. Run the desired test. For example, to run the **Load Test**:
 
     ```bash
     k6 run loadTest.js
@@ -100,29 +100,24 @@ Os testes podem ser executados **localmente** ou pelo **GitHub Actions**.
 
 ---
 
-### Opção 2: Executar via GitHub Actions
+### Option 2: Run via GitHub Actions
 
-Os testes também podem ser executados diretamente pelo **workflow do GitHub Actions**.
+Tests can also be executed directly through the **GitHub Actions workflow**.
 
-#### **Configuração no GitHub Actions**
-1. Acesse a aba **Actions** no repositório do GitHub.
-2. Escolha o workflow correspondente ao tipo de teste desejado (**Load Test, Soak Test, Spike Test ou Stress Test**).
-3. Configure os seguintes parâmetros antes de iniciar a execução:
-   - **Quantidade de Virtual Users (VUs)**: Número de usuários simulados.
-   - **Tempo de Execução**: Duração do teste.
-   - **Método HTTP (GET ou POST)**: Tipo de requisição a ser realizada.
-   - **Body da Requisição (caso POST)**: Necessário apenas se a requisição for do tipo POST.
-4. Execute o workflow e acompanhe os relatórios gerados automaticamente.
-
----
-
-## Relatórios
-
-Após a execução dos testes, os resultados em **HTML** serão salvos no diretório `performance/reports/`. Para visualizar, basta abrir o arquivo `index.html` no navegador.
-
-Se os testes forem executados via **GitHub Actions**, os relatórios estarão disponíveis nos artefatos do workflow.
+#### **GitHub Actions Setup**
+1. Go to the **Actions** tab in the GitHub repository.
+2. Select the workflow corresponding to the desired test type (**Load Test, Soak Test, Spike Test, or Stress Test**).
+3. Configure the following parameters before running the test:
+   - **Number of Virtual Users (VUs)**: Number of simulated users.
+   - **Execution Time**: Test duration.
+   - **HTTP Method (GET or POST)**: Type of request to be made.
+   - **Request Body (for POST requests)**: Required only if the request is of type POST.
+4. Run the workflow and monitor the automatically generated reports.
 
 ---
 
-Agora, você pode executar testes de performance tanto **localmente** quanto via **GitHub Actions**, garantindo flexibilidade e facilidade no monitoramento do desempenho da aplicação! 🚀
+## Reports
 
+After running the tests, the **HTML** results will be saved in the `performance/reports/` directory. To view them, simply open the `index.html` file in a browser.
+
+If the tests are executed via **GitHub Actions**, reports will be available in the workflow artifacts.
